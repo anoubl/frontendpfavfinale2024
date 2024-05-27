@@ -16,7 +16,7 @@ export class LoginService {
 
 
 
-  async addEnseignant(data : I)
+  async addEnseignant()
   {
 
   }

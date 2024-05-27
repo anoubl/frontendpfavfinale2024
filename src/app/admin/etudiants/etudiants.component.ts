@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
+import {FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule} from '@angular/forms';
 import {NavComponent} from "../nav/nav.component";
-import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgForOf} from "@angular/common";
 
 @Component({
-  selector: 'app-add-enseignant',
+  selector: 'app-etudiants',
+  templateUrl: './etudiants.component.html',
   standalone: true,
   imports: [
-    NavComponent,
     ReactiveFormsModule,
+    NavComponent,
     NgForOf
   ],
-  templateUrl: './add-enseignant.component.html',
-  styleUrl: './add-enseignant.component.css'
+  styleUrls: ['./etudiants.component.css']
 })
-export class AddEnseignantComponent {
+export class EtudiantsComponent  {
   form: FormGroup;
 
   constructor(private fb: FormBuilder) {
@@ -31,6 +31,7 @@ export class AddEnseignantComponent {
 
   addUser(): void {
     const userFormGroup = this.fb.group({
+      matricule: ['', Validators.required],
       prenom: ['', Validators.required],
       nom: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]]
@@ -48,5 +49,4 @@ export class AddEnseignantComponent {
       // Handle the form submission logic here
 
   }
-
 }

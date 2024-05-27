@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 import {NavComponent} from "../nav/nav.component";
 
 @Component({
-  selector: 'app-accueil',
+  selector: 'app-matieres',
   standalone: true,
     imports: [
         NavComponent
     ],
-  templateUrl: './accueil-admin.component.html',
-  styleUrl: './accueil-admin.component.css'
+  templateUrl: './matieres.component.html',
+  styleUrl: './matieres.component.css'
 })
-export class AccueilAdminComponent {
+export class MatieresComponent {
 
 }
