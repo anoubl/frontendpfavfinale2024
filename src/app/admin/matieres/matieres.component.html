@@ -1,3 +1,22 @@
 <app-nav></app-nav>
 
-<p>matieres works!</p>
+<div class="container mt-5">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div formArrayName="matieres">
+      <div *ngFor="let matiere of matieres.controls; let i = index" [formGroupName]="i" class="matiere-form-group mb-3 border rounded p-3">
+        <div class="form-group">
+          <label for="code-{{i}}">Code:</label>
+          <input type="text" id="code-{{i}}" formControlName="code" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="intitule-{{i}}">Intitulé Matière:</label>
+          <input type="text" id="intitule-{{i}}" formControlName="intitule" class="form-control">
+        </div>
+        <button type="button" class="btn btn-danger" (click)="removeMatiere(i)">Remove</button>
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary mt-3" (click)="addMatiere()">Add Matiere</button>
+    <button type="submit" class="btn btn-success mt-3">Submit</button>
+  </form>
+</div>
+
