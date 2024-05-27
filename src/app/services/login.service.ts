@@ -16,5 +16,10 @@ export class LoginService {
 
 
 
+<<<<<<< HEAD
+=======
+  async addEnseignant()
+  {
+>>>>>>> 91240b8937f8c40331feba2323c44a27c0611ceb
 
 }
