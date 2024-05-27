@@ -1,0 +1,26 @@
+
+<app-nav></app-nav>
+
+<div class="container mt-5">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div formArrayName="classStudentAssignments">
+      <div *ngFor="let classStudent of classStudentAssignments.controls; let i = index" [formGroupName]="i" class="class-student-form-group mb-3 border rounded p-3">
+        <div class="form-group">
+          <label for="class-{{i}}">Class:</label>
+          <select id="class-{{i}}" formControlName="class" class="form-control">
+            <option *ngFor="let class of classes" [ngValue]="class">{{ class.anneeUniversitaire }} - {{ class.niveau }} {{ class.specialite }} - Groupe {{ class.groupe }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="student-{{i}}">Student:</label>
+          <select id="student-{{i}}" formControlName="student" class="form-control">
+            <option *ngFor="let student of students" [ngValue]="student">{{ student.matricule }} - {{ student.nom }} {{ student.prenom }}</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-danger" (click)="removeClassStudentAssignment(i)">Remove</button>
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary mt-3" (click)="addClassStudentAssignment()">Add Assignment</button>
+    <button type="submit" class="btn btn-success mt-3">Submit</button>
+  </form>
+</div>

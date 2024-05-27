@@ -8,6 +8,7 @@ import {EtudiantsComponent} from "./admin/etudiants/etudiants.component";
 import {ClassesComponent} from "./admin/classes/classes.component";
 import {MatieresComponent} from "./admin/matieres/matieres.component";
 import {PlanificationComponent} from "./admin/planification/planification.component";
+import {EtuClassesComponent} from "./etu-classes/etu-classes.component";
 
 export const routes: Routes = [
   {path : '' , component : LoginComponent},
@@ -17,6 +18,7 @@ export const routes: Routes = [
   {path : 'add-enseignant' , component : AddEnseignantComponent},
   { path: 'etudiants', component: EtudiantsComponent },
   { path: 'classes', component: ClassesComponent },
+  { path: 'etu-classes', component: EtuClassesComponent},
   { path: 'matieres', component: MatieresComponent },
   { path: 'planification', component: PlanificationComponent },
 

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule} from '@angular/forms';
 import { NavComponent } from '../nav/nav.component';
-import {NgForOf} from "@angular/common"; // Import du composant de navigation
+import {NgForOf, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-classes',
@@ -10,18 +10,14 @@ import {NgForOf} from "@angular/common"; // Import du composant de navigation
   imports: [
     ReactiveFormsModule,
     NavComponent,
-    NgForOf
+    NgForOf,
+    NgIf
   ],
   styleUrls: ['./classes.component.css']
 })
 export class ClassesComponent {
   form: FormGroup;
-  students: any[] = [
-    { id: 1, matricule: '001', nom: 'Doe', prenom: 'John' },
-    { id: 2, matricule: '002', nom: 'Smith', prenom: 'Alice' },
-    { id: 3, matricule: '003', nom: 'Johnson', prenom: 'Bob' }
-    // Add more student objects as needed
-  ];
+  anneeUniversitaireSelected: boolean[] = [];
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -40,14 +36,22 @@ export class ClassesComponent {
       anneeUniversitaire: ['', Validators.required],
       niveau: ['', Validators.required],
       specialite: ['', Validators.required],
-      groupe: ['', Validators.required],
-      student: [''] // Ajout du champ student dans le formulaire
+      groupe: ['', Validators.required]
     });
     this.classes.push(classFormGroup);
+    this.anneeUniversitaireSelected.push(false); // Initialize the selected state for this class
   }
 
   removeClass(index: number): void {
     this.classes.removeAt(index);
+    this.anneeUniversitaireSelected.splice(index, 1); // Remove the selected state for this class
+  }
+
+  selectAnneeUniversitaire(index: number): void {
+    const anneeUniversitaireControl = this.classes.at(index).get('anneeUniversitaire');
+    if (anneeUniversitaireControl && anneeUniversitaireControl.valid) {
+      this.anneeUniversitaireSelected[index] = true;
+    }
   }
 
   onSubmit(): void {
