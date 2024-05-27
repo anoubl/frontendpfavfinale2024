@@ -1,0 +1,18 @@
+body {
+  background-image: url('https://emsi.ma/wp-content/uploads/2020/07/DSC04043-retouche-scaled.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 100px;
+  border-radius: 8px;
+  color: white; /* Ensure text is readable on the background image */
+}
+
+.login-card {
+  margin-top: 100px; /* Adjust the margin to center the login card vertically */
+}
+
+.card-body {
+  background: rgba(0, 0, 0, 0.6); /* Optional: to make the content area semi-transparent */
+  padding: 20px;
+  border-radius: 8px;
+}

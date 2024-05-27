@@ -1,0 +1,28 @@
+/* Style for the navbar */
+.navbar {
+  background-color: #808080; /* Grey background color */
+}
+
+/* Style for the navbar brand */
+.navbar-brand {
+  color: #4CAF50 !important; /* Green text color */
+  font-weight: bold;
+}
+
+/* Style for the navbar toggler icon */
+.navbar-toggler-icon {
+  background-color: #4CAF50 !important; /* Green icon color */
+}
+
+/* Style for the navbar links */
+.navbar-nav .nav-link {
+  color: #4CAF50 !important; /* Green text color */
+  font-weight: bold;
+}
+
+/* Style for the active navbar link */
+.navbar-nav .nav-link.active {
+  color: #4CAF50 !important; /* Green text color */
+  background-color: #d3d3d3; /* Light grey background color */
+  border-radius: 5px; /* Optional: Add some border radius for a rounded look */
+}
