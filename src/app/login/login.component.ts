@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import {FormsModule} from "@angular/forms";
-import {LoginService} from "../services/login.service";
+import { FormsModule } from '@angular/forms';
+import { LoginService } from '../services/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,29 +10,34 @@ import {LoginService} from "../services/login.service";
     FormsModule
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  username: any;
-  password: any;
+  username: string = '';
+  password: string = '';
+  role: string = '';
 
-  constructor(private logins: LoginService) {
-
-
-  }
+  constructor(private loginService: LoginService, private router: Router) {}
 
   login() {
-  this.logins.
-  login(this.username , this.password)
-    .then((data) =>
-    {
+    this.loginService.login(this.username, this.password)
+      .then((response: any) => {
+        this.role = response.data.role;
 
-    })
-    .catch((error) => console.log(error))
+        if (this.role === 'ADMIN') {
+          this.router.navigate(['/admin-dashboard']);
+        } else {
+          this.router.navigate(['/user-dashboard']);
+        }
+      })
+      .catch((error: any) => {
+        console.error('Login failed', error);
+        alert('Login failed. Please check your username and password.');
+      });
   }
 
   resetForm() {
-  this.username = ''
-    this.password = ''
+    this.username = '';
+    this.password = '';
   }
 }
