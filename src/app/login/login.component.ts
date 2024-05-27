@@ -25,9 +25,13 @@ export class LoginComponent {
         this.role = response.data.role;
 
         if (this.role === 'ADMIN') {
-          this.router.navigate(['/admin-dashboard']);
-        } else {
-          this.router.navigate(['/user-dashboard']);
+          this.router.navigate(['/accueil-admin']);
+        } else if (this.role == "ETUDIANT") {
+          this.router.navigate(['/accueil-enseignant']);
+        }
+        else
+        {
+          this.router.navigate(['/accueil-etudiant']);
         }
       })
       .catch((error: any) => {

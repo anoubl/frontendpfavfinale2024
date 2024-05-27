@@ -6,8 +6,8 @@ import {AccueilEtudiantComponent} from "./etudiant/accueil/accueil.component";
 
 export const routes: Routes = [
   {path : '' , component : LoginComponent},
-  {path : '/accueil-admin' , component : AccueilAdminComponent},
-  {path : '/accueil-enseignant' , component : AccueilEnseignantComponent},
-  {path : '/accueil-etudiant' , component : AccueilEtudiantComponent},
+  {path : 'accueil-admin' , component : AccueilAdminComponent},
+  {path : 'accueil-enseignant' , component : AccueilEnseignantComponent},
+  {path : 'accueil-etudiant' , component : AccueilEtudiantComponent},
 
 ];
