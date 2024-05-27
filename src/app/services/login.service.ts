@@ -13,4 +13,11 @@ export class LoginService {
   {
     return axios.post(baseUrl +"/Utilisateurs/login", {email : username , password : password})
   }
+
+
+
+  async addEnseignant(data : I)
+  {
+
+  }
 }
