@@ -1,64 +1,55 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule} from '@angular/forms';
-import {NgForOf, NgIf} from '@angular/common';
-import { NavComponent } from '../nav/nav.component';
+import axios from 'axios';
+import { baseUrl } from "../../../main";
+import {NavComponent} from "../nav/nav.component";
+import {NgForOf} from "@angular/common";
 
 @Component({
   selector: 'app-planification',
   templateUrl: './planification.component.html',
-  styleUrls: ['./planification.component.css'],
   standalone: true,
   imports: [
-    ReactiveFormsModule,
-    NgForOf,
     NavComponent,
-    NgIf
-  ]
+    ReactiveFormsModule,
+    NgForOf
+  ],
+  styleUrls: ['./planification.component.css']
 })
-export class PlanificationComponent {
+export class PlanificationComponent implements OnInit {
   form: FormGroup;
-  groupSelected = false;
+  semesters: any[] = [];
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
       semestre: ['', Validators.required],
-      classe: ['', Validators.required],
-      groupe: ['', Validators.required],
-      details: this.fb.array([])
+      // Other form controls
     });
   }
 
-  get details(): FormArray {
-    return this.form.get('details') as FormArray;
-  }
+  ngOnInit(): void {
+    // Fetch semesters data
+    axios.get(baseUrl + '/semestres/labels')
+      .then((res) => {
+        this.semesters = res.data;
+      })
+      .catch((err) => {
+        console.error('Error fetching semesters:', err);
+      });
 
-  addDetail(): void {
-    const detailFormGroup = this.fb.group({
-      matiere: ['', Validators.required],
-      enseignant: ['', Validators.required]
+    // Subscribe to value changes of semestre control
+    this.form.get('semestre')?.valueChanges.subscribe((semesterId: string) => {
+      // Handle the change here
+     axios.get(baseUrl +`/semestres/ClassesByLabel/${semesterId}`)
+       .then((res) => console.log(res))
+       .catch((err) => console.log(err))
     });
-    this.details.push(detailFormGroup);
-  }
-
-  removeDetail(index: number): void {
-    this.details.removeAt(index);
-  }
-
-  selectGroup(): void {
-    if (this.form.controls['semestre'].valid && this.form.controls['classe'].valid && this.form.controls['groupe'].valid) {
-      this.groupSelected = true;
-      if (this.details.length === 0) {
-        this.addDetail(); // Initialize with one detail form group if none exist
-      }
-    } else {
-      this.groupSelected = false;
-    }
   }
 
   onSubmit(): void {
     if (this.form.valid) {
-      console.log(this.form.value);
-      // Handle the form submission logic here
+      console.log('Form values:', this.form.value);
+      // Handle form submission logic here
     } else {
       console.error('Form is invalid');
     }

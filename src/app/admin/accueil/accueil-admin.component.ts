@@ -12,4 +12,5 @@ import {NavComponent} from "../nav/nav.component";
 })
 export class AccueilAdminComponent {
 
+  protected readonly sessionStorage = sessionStorage;
 }

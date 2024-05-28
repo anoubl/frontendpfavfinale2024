@@ -16,14 +16,15 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
   role: string = '';
-
+  fullName : string = ''
   constructor(private loginService: LoginService, private router: Router) {}
 
   login() {
     this.loginService.login(this.username, this.password)
       .then((response: any) => {
         this.role = response.data.role;
-
+        this.fullName = response.data.username
+        sessionStorage.setItem("userName" , this.fullName)
         if (this.role === 'ADMIN') {
           this.router.navigate(['/accueil-admin']);
         } else if (this.role == "ETUDIANT") {

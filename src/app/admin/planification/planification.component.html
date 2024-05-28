@@ -1,80 +1,11 @@
-<app-nav></app-nav>
-
-<div class="container mt-5">
+<app-nav></app-nav><div class="container mt-5">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <label for="semestre">Semestre:</label>
-      <select id="semestre" formControlName="semestre" class="form-control">
-        <option value="S1 2024/2025">S1 2024/2025</option>
-        <option value="S2 2024/2025">S2 2024/2025</option>
-        <option value="S1 2025/2026">S1 2025/2026</option>
-        <option value="S2 2025/2026">S2 2025/2026</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="classe">Classe:</label>
-      <select id="classe" formControlName="classe" class="form-control">
-        <option value="1-IIR">1ère année - IIR</option>
-        <option value="1-Finance">1ère année - Finance</option>
-        <option value="1-Industriel">1ère année - Industriel</option>
-        <option value="2-IIR">2ème année - IIR</option>
-        <option value="2-Finance">2ème année - Finance</option>
-        <option value="2-Industriel">2ème année - Industriel</option>
-        <option value="3-IIR">3ème année - IIR</option>
-        <option value="3-Finance">3ème année - Finance</option>
-        <option value="3-Industriel">3ème année - Industriel</option>
-        <option value="4-IIR">4ème année - IIR</option>
-        <option value="4-Finance">4ème année - Finance</option>
-        <option value="4-Industriel">4ème année - Industriel</option>
-        <option value="5-IIR">5ème année - IIR</option>
-        <option value="5-Finance">5ème année - Finance</option>
-        <option value="5-Industriel">5ème année - Industriel</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="groupe">Groupe:</label>
-      <select id="groupe" formControlName="groupe" class="form-control">
-        <option value="1">Groupe 1</option>
-        <option value="2">Groupe 2</option>
-        <option value="3">Groupe 3</option>
-        <option value="4">Groupe 4</option>
-        <option value="5">Groupe 5</option>
-        <option value="6">Groupe 6</option>
-        <option value="7">Groupe 7</option>
-        <option value="8">Groupe 8</option>
-        <option value="9">Groupe 9</option>
-        <option value="10">Groupe 10</option>
-        <option value="11">Groupe 11</option>
-        <option value="12">Groupe 12</option>
-      </select>
-    </div>
-    <button type="button" class="btn btn-primary mt-3" (click)="selectGroup()">Selectionner</button>
 
-    <div *ngIf="groupSelected">
-      <div formArrayName="details">
-        <div *ngFor="let detail of details.controls; let j = index" [formGroupName]="j" class="detail-form-group mb-3 border rounded p-3">
-          <div class="form-group">
-            <label for="matiere-{{j}}">Matière:</label>
-            <select id="matiere-{{j}}" formControlName="matiere" class="form-control">
-              <option value="Admin Arocle1">Admin Arocle1</option>
-              <option value="Francais">Francais</option>
-              <option value="Anglais">Anglais</option>
-              <option value="Java">Java</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="enseignant-{{j}}">Enseignant:</label>
-            <select id="enseignant-{{j}}" formControlName="enseignant" class="form-control">
-              <option value="Prof. A">Prof. A</option>
-              <option value="Prof. B">Prof. B</option>
-              <option value="Prof. C">Prof. C</option>
-            </select>
-          </div>
-          <button type="button" class="btn btn-danger" (click)="removeDetail(j)">Remove</button>
-        </div>
-      </div>
-      <button type="button" class="btn btn-primary mt-3" (click)="addDetail()">Add Matiere</button>
-      <button type="submit" class="btn btn-success mt-3">Submit</button>
+      <select formControlName="semestre" class="form-control">
+        <option *ngFor="let semester of semesters" [value]="semester.id">{{ semester.label }}</option>
+      </select>
     </div>
+    <!-- Other form fields and buttons -->
   </form>
 </div>

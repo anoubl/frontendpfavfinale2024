@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
-import {FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule} from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar'; // Import MatSnackBar for notifications
 import { NgForOf } from '@angular/common';
 import { NavComponent } from '../nav/nav.component';
+import axios from 'axios';
+import {baseUrl} from "../../../main"; // Axios for HTTP requests
 
 @Component({
   selector: 'app-matieres',
@@ -11,18 +14,18 @@ import { NavComponent } from '../nav/nav.component';
   imports: [
     ReactiveFormsModule,
     NgForOf,
-    NavComponent
+    NavComponent,
+     // Ensure MatSnackBar is included in standalone components
   ]
 })
 export class MatieresComponent {
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {
     this.form = this.fb.group({
       matieres: this.fb.array([])
     });
-
-    this.addMatiere(); // Initialize with one matiere form group
+    this.addMatiere();
   }
 
   get matieres(): FormArray {
@@ -32,7 +35,7 @@ export class MatieresComponent {
   addMatiere(): void {
     const matiereFormGroup = this.fb.group({
       code: ['', Validators.required],
-      intitule: ['', Validators.required]
+      label: ['', Validators.required]
     });
     this.matieres.push(matiereFormGroup);
   }
@@ -42,7 +45,14 @@ export class MatieresComponent {
   }
 
   onSubmit(): void {
-    console.log(this.form.value);
-    // Handle the form submission logic here
+    this.matieres.controls.forEach((matiere, index) => {
+      axios.post(baseUrl+'/matieres', matiere.value)
+        .then(response => {
+          this.snackBar.open(`Submission successful for Matiere ${index + 1}`, 'Close', { duration: 3000 });
+        })
+        .catch(error => {
+          this.snackBar.open(`Failed to submit Matiere ${index + 1}: ${error.message}`, 'Close', { duration: 3000 });
+        });
+    });
   }
 }
