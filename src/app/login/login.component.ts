@@ -27,7 +27,7 @@ export class LoginComponent {
         sessionStorage.setItem("userName" , this.fullName)
         if (this.role === 'ADMIN') {
           this.router.navigate(['/accueil-admin']);
-        } else if (this.role == "ETUDIANT") {
+        } else if (this.role == "ENSEIGNANT") {
           this.router.navigate(['/accueil-enseignant']);
         }
         else
