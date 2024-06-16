@@ -15,15 +15,19 @@
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/classes']" routerLinkActive="active">Classes</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/etu-classes']" routerLinkActive="active">Etu-classes</a>
-      </li>
+
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/matieres']" routerLinkActive="active">Matières</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/planification']" routerLinkActive="active">Planification</a>
       </li>
+      <ul class="navbar-nav logout-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#" (click)="logout()">Déconnexion</a>
+        </li>
+      </ul>
+
     </ul>
   </div>
 </nav>

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EtuClassesComponent } from './etu-classes.component';
+import { BultinEtudiantComponent } from './bultin-etudiant.component';
 
-describe('EtuClassesComponent', () => {
-  let component: EtuClassesComponent;
-  let fixture: ComponentFixture<EtuClassesComponent>;
+describe('BultinEtudiantComponent', () => {
+  let component: BultinEtudiantComponent;
+  let fixture: ComponentFixture<BultinEtudiantComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EtuClassesComponent]
+      imports: [BultinEtudiantComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(EtuClassesComponent);
+    fixture = TestBed.createComponent(BultinEtudiantComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
