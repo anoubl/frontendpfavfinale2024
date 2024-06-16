@@ -1,81 +1,58 @@
+// classes.component.ts
+
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
-import { NavComponent } from '../nav/nav.component';
-import { NgForOf, NgIf } from '@angular/common';
-import axios from "axios";
-import { baseUrl } from "../../../main";
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {FormsModule} from "@angular/forms";
+import {NgForOf, NgIf} from "@angular/common";
+import {NavComponent} from "../nav/nav.component";
+
+interface Classe {
+  anneeUniversitaire: string;
+  niveau: string;
+  specialite: string;
+  nombreGroupes: number;
+}
 
 @Component({
   selector: 'app-classes',
   templateUrl: './classes.component.html',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
-    NavComponent,
+    FormsModule,
     NgForOf,
-    NgIf
+    NgIf,
+    NavComponent
   ],
   styleUrls: ['./classes.component.css']
 })
 export class ClassesComponent {
-  form: FormGroup;
-  anneeUniversitaireSelected: boolean[] = [];
+  classes: Classe[] = [];
+  anneeSelectionnee: string = '';
+  nouvelleClasse: Classe = {
+    anneeUniversitaire: '',
+    niveau: '',
+    specialite: '',
+    nombreGroupes: 0
+  };
 
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {
-    this.form = this.fb.group({
-      classes: this.fb.array([])
-    });
+  anneesUniversitaires: string[] = ['2023-2024', '2024-2025', '2025-2026']; // Exemple de valeurs
 
-    this.addClass(); // Initialize with one class form group
+  ajouterClasse() {
+    this.classes.push({ ...this.nouvelleClasse });
+    this.nouvelleClasse = {
+      anneeUniversitaire: '',
+      niveau: '',
+      specialite: '',
+      nombreGroupes: 0
+    };
   }
 
-  get classes(): FormArray {
-    return this.form.get('classes') as FormArray;
-  }
-
-  addClass(): void {
-    const classFormGroup = this.fb.group({
-      annee: ['', Validators.required],
-      niveau: ['', Validators.required],
-      specialite: ['', Validators.required],
-      groupes: ['', Validators.required]
-    });
-    this.classes.push(classFormGroup);
-    this.anneeUniversitaireSelected.push(false); // Initialize the selected state for this class
-  }
-
-  removeClass(index: number): void {
-    this.classes.removeAt(index);
-    this.anneeUniversitaireSelected.splice(index, 1); // Remove the selected state for this class
-  }
-
-  selectAnneeUniversitaire(index: number): void {
-    const anneeUniversitaireControl = this.classes.at(index).get('anneeUniversitaire');
-    if (anneeUniversitaireControl && anneeUniversitaireControl.valid) {
-      this.anneeUniversitaireSelected[index] = true;
-    }
-  }
-
-  onSubmit(): void {
-    console.log(this.form.value);
-
-    this.classes.controls.forEach((classe) => {
-      axios.post(`${baseUrl}/classes`, classe.value)
-        .then((res) => {
-          console.log(res);
-          this.snackBar.open('Classe ajoutée avec succès', 'Fermer', {
-            duration: 3000,
-            verticalPosition: 'top',
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-          this.snackBar.open('Erreur lors de l\'ajout de la classe', 'Fermer', {
-            duration: 3000,
-            verticalPosition: 'top',
-          });
-        });
-    });
+  filtrerClasses() {
+    // Simuler une récupération des classes par année universitaire depuis un service ou une liste existante
+    this.classes = [
+      { anneeUniversitaire: '2023-2024', niveau: 'Licence 1', specialite: 'Informatique', nombreGroupes: 2 },
+      { anneeUniversitaire: '2023-2024', niveau: 'Master 1', specialite: 'Gestion', nombreGroupes: 3 },
+      { anneeUniversitaire: '2024-2025', niveau: 'Licence 1', specialite: 'Informatique', nombreGroupes: 2 }
+      // Ajoutez d'autres classes selon vos besoins
+    ].filter(classe => classe.anneeUniversitaire === this.anneeSelectionnee);
   }
 }

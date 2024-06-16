@@ -1,56 +1,53 @@
+<!-- classes.component.html -->
 <app-nav></app-nav>
-
-<div class="container mt-5">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div formArrayName="classes">
-      <div *ngFor="let class of classes.controls; let i = index" [formGroupName]="i" class="class-form-group mb-3 border rounded p-3">
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <h2>Sélectionner une année universitaire </h2>
+      <form>
         <div class="form-group">
-          <label for="annee-{{i}}">Année Universitaire:</label>
-          <input type="text" id="anneeUniversitaire-{{i}}" formControlName="annee" class="form-control">
+          <label>Sélectionner une année universitaire:</label>
+          <select class="form-control" [(ngModel)]="anneeSelectionnee" name="anneeUniversitaire" (change)="filtrerClasses()">
+            <option *ngFor="let annee of anneesUniversitaires" [value]="annee">{{ annee }}</option>
+          </select>
         </div>
-        <button *ngIf="!anneeUniversitaireSelected[i]" type="button" class="btn btn-primary mt-3" (click)="selectAnneeUniversitaire(i)">Sélectionner</button>
 
-        <div *ngIf="anneeUniversitaireSelected[i]">
-          <div class="form-group">
-            <label for="niveau-{{i}}">Niveau:</label>
-            <select id="niveau-{{i}}" formControlName="niveau" class="form-control">
-              <option value="1">1ère année</option>
-              <option value="2">2ème année</option>
-              <option value="3">3ème année</option>
-              <option value="4">4ème année</option>
-              <option value="5">5ème année</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="specialite-{{i}}">Spécialité:</label>
-            <select id="specialite-{{i}}" formControlName="specialite" class="form-control">
-              <option value="IIR">IIR</option>
-              <option value="Finance">Finance</option>
-              <option value="Industriel">Industriel</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="groupe-{{i}}">Groupe:</label>
-            <select id="groupe-{{i}}" formControlName="groupes" class="form-control">
-              <option value="1">Groupe 1</option>
-              <option value="2">Groupe 2</option>
-              <option value="3">Groupe 3</option>
-              <option value="4">Groupe 4</option>
-              <option value="5">Groupe 5</option>
-              <option value="6">Groupe 6</option>
-              <option value="7">Groupe 7</option>
-              <option value="8">Groupe 8</option>
-              <option value="9">Groupe 9</option>
-              <option value="10">Groupe 10</option>
-              <option value="11">Groupe 11</option>
-              <option value="12">Groupe 12</option>
-            </select>
-          </div>
-          <button type="button" class="btn btn-danger" (click)="removeClass(i)">Remove</button>
+        <div *ngIf="classes.length > 0">
+          <h3>Liste des classes pour l'année {{ anneeSelectionnee }}</h3>
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let classe of classes">
+              {{ classe.niveau }} - {{ classe.specialite }} ({{ classe.nombreGroupes }} groupes)
+            </li>
+          </ul>
         </div>
-      </div>
+      </form>
     </div>
-    <button type="button" class="btn btn-primary mt-3" (click)="addClass()">Add Class</button>
-    <button type="submit" class="btn btn-success mt-3">Submit</button>
-  </form>
+
+    <div class="col-md-6">
+      <h2>Ajouter une nouvelle classe</h2>
+      <form class="form-inline">
+        <div class="form-group mr-2">
+          <label class="mr-2">Année universitaire:</label>
+          <input type="text" class="form-control" [(ngModel)]="nouvelleClasse.anneeUniversitaire" name="anneeUniversitaire" placeholder="Année universitaire">
+        </div>
+
+        <div class="form-group mr-2">
+          <label class="mr-2">Niveau:</label>
+          <input type="text" class="form-control" [(ngModel)]="nouvelleClasse.niveau" name="niveau" placeholder="Niveau">
+        </div>
+
+        <div class="form-group mr-2">
+          <label class="mr-2">Spécialité:</label>
+          <input type="text" class="form-control" [(ngModel)]="nouvelleClasse.specialite" name="specialite" placeholder="Spécialité">
+        </div>
+
+        <div class="form-group mr-2">
+          <label class="mr-2">Nombre de groupes:</label>
+          <input type="number" class="form-control" [(ngModel)]="nouvelleClasse.nombreGroupes" name="nombreGroupes" placeholder="Nombre de groupes">
+        </div>
+
+        <button type="button" class="btn btn-primary" (click)="ajouterClasse()">Enregistrer</button>
+      </form>
+    </div>
+  </div>
 </div>

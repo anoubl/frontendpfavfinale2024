@@ -26,3 +26,6 @@
   background-color: #d3d3d3; /* Light grey background color */
   border-radius: 5px; /* Optional: Add some border radius for a rounded look */
 }
+.logout-nav {
+  margin-left: auto;
+}

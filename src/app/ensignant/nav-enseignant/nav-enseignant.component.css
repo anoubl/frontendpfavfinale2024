@@ -1,0 +1,113 @@
+/* admin-dashboard.component.css */
+
+/* Style for the navbar */
+.navbar {
+  background-color: #808080; /* Grey background color */
+  padding: 0.75rem 1rem; /* Padding for spacing */
+}
+
+/* Style for the navbar brand */
+.navbar-brand {
+  color: #4CAF50 !important; /* Green text color */
+  font-weight: bold;
+}
+
+/* Style for the navbar toggler icon */
+.navbar-toggler-icon {
+  background-color: #4CAF50 !important; /* Green icon color */
+}
+
+/* Style for the navbar links */
+.navbar-nav .nav-link {
+  color: #4CAF50 !important; /* Green text color */
+  font-weight: bold;
+  margin-right: 0.75rem; /* Spacing between links */
+}
+
+/* Style for the active navbar link */
+.navbar-nav .nav-link.active {
+  color: #4CAF50 !important; /* Green text color */
+  background-color: #d3d3d3; /* Light grey background color */
+  border-radius: 5px; /* Optional: Add some border radius for a rounded look */
+  padding: 0.25rem 0.5rem; /* Padding for active link */
+}
+
+/* Style for logout link */
+.logout-nav {
+  margin-left: auto; /* Pushes the logout link to the right */
+}
+
+.logout-nav .nav-link {
+  color: #4CAF50 !important;
+  font-weight: bold;
+}
+
+/* Container */
+.container {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* Card Header */
+.card-header {
+  font-size: 1.5rem;
+  background-color: #007bff;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+
+/* Card Title */
+.card-title {
+  font-size: 1.25rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+/* Card Text */
+.card-text {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+/* Card Body */
+.card-body {
+  padding: 2rem;
+  background-color: #f8f9fa;
+}
+
+/* Card Styling */
+.card {
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  .card-header {
+    font-size: 1.25rem;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+  }
+
+  .card-text {
+    font-size: 0.95rem;
+  }
+
+  /* Mobile adjustments for navbar */
+  .navbar-nav .nav-link {
+    margin-right: 0; /* Remove margin for stacked links */
+    text-align: center;
+  }
+}

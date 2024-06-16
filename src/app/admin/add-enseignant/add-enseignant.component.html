@@ -1,36 +1,35 @@
 <app-nav></app-nav>
-
-<div class="container mt-5">
-  <!-- Display existing enseignants -->
-  <div *ngIf="enseignants.length > 0" class="existing-enseignants mb-5">
-    <h3>Liste des Enseignants</h3>
-    <ul class="list-group">
-      <li *ngFor="let enseignant of enseignants" class="list-group-item">
-         {{ enseignant.fullName }}   - {{ enseignant.email }}
-      </li>
-    </ul>
-  </div>
-
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div formArrayName="users">
-      <div *ngFor="let user of users.controls; let i = index" [formGroupName]="i" class="user-form-group mb-3 border rounded p-3">
-        <div class="form-group">
-          <label for="prenom-{{i}}">Prenom:</label>
-          <input type="text" id="prenom-{{i}}" formControlName="prenom" class="form-control">
-        </div>
-        <div class="form-group">
-          <label for="nom-{{i}}">Nom:</label>
-          <input type="text" id="nom-{{i}}" formControlName="nom" class="form-control">
-        </div>
-        <div class="form-group">
-          <label for="email-{{i}}">Email:</label>
-          <input type="email" id="email-{{i}}" formControlName="email" class="form-control">
-        </div>
-        <button type="button" class="btn btn-danger" (click)="removeUser(i)">Remove</button>
-      </div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <h2>Liste des enseignants</h2>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let enseignant of enseignants">
+          {{ enseignant.prenom }} {{ enseignant.nom }} - {{ enseignant.email }}
+        </li>
+      </ul>
     </div>
-    <button type="button" class="btn btn-primary mt-3" (click)="addUser()">Plus</button>
-    <br>
-    <button type="submit" (click)="onSubmit()" class="btn btn-success mt-3">Submit</button>
-  </form>
+
+    <div class="col-md-6">
+      <h2>Ajouter un nouvel enseignant</h2>
+      <form [formGroup]="form" class="form-inline" (ngSubmit)="onSubmit()">
+        <div class="form-group mr-2">
+          <label class="mr-2">Prénom:</label>
+          <input type="text" formControlName="prenom" class="form-control" placeholder="Prénom">
+        </div>
+
+        <div class="form-group mr-2">
+          <label class="mr-2">Nom:</label>
+          <input type="text" formControlName="nom" class="form-control" placeholder="Nom">
+        </div>
+
+        <div class="form-group mr-2">
+          <label class="mr-2">Email:</label>
+          <input type="email" formControlName="email" class="form-control" placeholder="Email">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </form>
+    </div>
+  </div>
 </div>
