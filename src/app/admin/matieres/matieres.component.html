@@ -1,22 +1,31 @@
 <app-nav></app-nav>
-
 <div class="container mt-5">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div formArrayName="matieres">
-      <div *ngFor="let matiere of matieres.controls; let i = index" [formGroupName]="i" class="matiere-form-group mb-3 border rounded p-3">
-        <div class="form-group">
-          <label for="code-{{i}}">Code:</label>
-          <input type="text" id="code-{{i}}" formControlName="code" class="form-control">
-        </div>
-        <div class="form-group">
-          <label for="intitule-{{i}}">Intitulé Matière:</label>
-          <input type="text" id="label-{{i}}" formControlName="label" class="form-control">
-        </div>
-        <button type="button" class="btn btn-danger" (click)="removeMatiere(i)">Remove</button>
-      </div>
-    </div>
-    <button type="button" class="btn btn-primary mt-3" (click)="addMatiere()">Add Matiere</button>
-    <button type="submit" class="btn btn-success mt-3">Submit</button>
-  </form>
-</div>
+  <div class="row">
+    <!-- Affichage des matières existantes -->
+    <div class="col-md-6">
+      <h2>Liste des matières</h2>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let matiere of matieres; let i = index">
+          {{ matiere.code }} - {{ matiere.intitule }}
 
+        </li>
+      </ul>
+    </div>
+
+    <!-- Ajout d'une nouvelle matière -->
+    <div class="col-md-6">
+      <h2>Ajouter une nouvelle matière</h2>
+      <form [formGroup]="form" (ngSubmit)="ajouterMatiere()">
+        <div class="mb-3">
+          <label for="code" class="form-label">Code:</label>
+          <input type="text" id="code" class="form-control" formControlName="code">
+        </div>
+        <div class="mb-3">
+          <label for="intitule" class="form-label">Intitulé:</label>
+          <input type="text" id="intitule" class="form-control" formControlName="intitule">
+        </div>
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+      </form>
+    </div>
+  </div>
+</div>
