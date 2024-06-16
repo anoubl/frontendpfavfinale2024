@@ -1,13 +1,16 @@
-import { Component } from '@angular/core';
-import {NavComponent} from "../nav/nav.component";
-import {NgForOf} from "@angular/common";
-import {FormsModule} from "@angular/forms";
+import { Component, OnInit } from '@angular/core';
+import { NavComponent } from "../nav/nav.component";
+import { NgForOf } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import axios from 'axios';
+import {baseUrl} from "../../../main";
 
 interface Etudiant {
   matricule: string;
   prenom: string;
   nom: string;
   email: string;
+  password ?:String ;
 }
 
 @Component({
@@ -21,32 +24,45 @@ interface Etudiant {
   ],
   styleUrls: ['./etudiants.component.css']
 })
-export class EtudiantsComponent {
+export class EtudiantsComponent implements OnInit {
   etudiants: Etudiant[] = [];
   nouveauEtudiant: Etudiant = {
     matricule: '',
     prenom: '',
     nom: '',
-    email: ''
+    email: '',
+    password : ''
   };
   etudiantSelectionne: Etudiant | null = null;
 
-  constructor() {
-    // Initialisation avec des données d'exemple
-    this.etudiants = [
-      { matricule: '12345', prenom: 'Jean', nom: 'Dupont', email: 'jean.dupont@example.com' },
-      { matricule: '67890', prenom: 'Alice', nom: 'Martin', email: 'alice.martin@example.com' }
-    ];
+  ngOnInit(): void {
+    this.fetchEtudiants();
   }
 
-  ajouterEtudiant(): void {
-    this.etudiants.push({ ...this.nouveauEtudiant });
-    this.nouveauEtudiant = {
-      matricule: '',
-      prenom: '',
-      nom: '',
-      email: ''
-    };
+  private async fetchEtudiants(): Promise<void> {
+    try {
+      const response = await axios.get<Etudiant[]>(`${baseUrl}/Utilisateurs/students`);
+      this.etudiants = response.data;
+    } catch (error) {
+      console.error('Error fetching etudiants:', error);
+      // Handle error (e.g., display an error message to the user)
+    }
+  }
+
+  async ajouterEtudiant(): Promise<void> {
+    try {
+      const response = await axios.post<Etudiant>(`${baseUrl}/Utilisateurs/etudiant`, this.nouveauEtudiant);
+      this.etudiants.push(response.data);
+      this.nouveauEtudiant = {
+        matricule: '',
+        prenom: '',
+        nom: '',
+        email: ''
+      };
+    } catch (error) {
+      console.error('Error adding etudiant:', error);
+      // Handle error (e.g., display an error message to the user)
+    }
   }
 
   selectionnerEtudiant(etudiant: Etudiant): void {
