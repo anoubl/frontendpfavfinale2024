@@ -1,7 +1,5 @@
 <app-nav></app-nav>
-
-<div class="container mt-5">
-  <!-- Section for displaying teachers -->
+<div class="container">
   <div class="row">
     <div class="col-md-6">
       <h2>Liste des enseignants</h2>
@@ -11,25 +9,25 @@
         </li>
       </ul>
     </div>
-  </div>
 
-  <!-- Section for adding a new teacher -->
-  <div class="row mt-5">
     <div class="col-md-6">
-      <h2>Ajouter un novel enseignant</h2>
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <label for="prenom">Prénom:</label>
-          <input type="text" id="prenom" formControlName="prenom" class="form-control">
+      <h2>Ajouter un nouvel enseignant</h2>
+      <form [formGroup]="form" class="form-inline" (ngSubmit)="onSubmit()">
+        <div class="form-group mr-2">
+          <label class="mr-2">Prénom:</label>
+          <input type="text" formControlName="prenom" class="form-control" placeholder="Prénom">
         </div>
-        <div class="form-group">
-          <label for="nom">Nom:</label>
-          <input type="text" id="nom" formControlName="nom" class="form-control">
+
+        <div class="form-group mr-2">
+          <label class="mr-2">Nom:</label>
+          <input type="text" formControlName="nom" class="form-control" placeholder="Nom">
         </div>
-        <div class="form-group">
-          <label for="email">Email:</label>
-          <input type="email" id="email" formControlName="email" class="form-control">
+
+        <div class="form-group mr-2">
+          <label class="mr-2">Email:</label>
+          <input type="email" formControlName="email" class="form-control" placeholder="Email">
         </div>
+
         <button type="submit" class="btn btn-primary">Enregistrer</button>
       </form>
     </div>

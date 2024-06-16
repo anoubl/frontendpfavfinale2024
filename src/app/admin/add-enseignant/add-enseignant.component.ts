@@ -11,18 +11,23 @@ interface Enseignant {
 }
 
 @Component({
-  selector: 'app-classes',
+  selector: 'app-add-enseignant',
   templateUrl: './add-enseignant.component.html',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
     NavComponent,
+    ReactiveFormsModule,
     NgForOf
   ],
   styleUrls: ['./add-enseignant.component.css']
 })
 export class AddEnseignantComponent {
-  enseignants: Enseignant[] = []; // Array to hold the list of teachers
+  enseignants: Enseignant[] = [
+    { prenom: 'Jean', nom: 'Dupont', email: 'jean.dupont@example.com' },
+    { prenom: 'Marie', nom: 'Lefevre', email: 'marie.lefevre@example.com' },
+    { prenom: 'Pierre', nom: 'Martin', email: 'pierre.martin@example.com' }
+  ]; // Array initialized with static enseignant data
+
   form: FormGroup;
 
   constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {
@@ -38,9 +43,7 @@ export class AddEnseignantComponent {
   }
 
   onSubmit(): void {
-    if (this.form.invalid) {
-      return;
-    }
+
 
     const enseignant: Enseignant = {
       prenom: this.form.value.prenom,
