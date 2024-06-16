@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { NgForOf } from '@angular/common';
+import {NgForOf, NgIf} from '@angular/common';
 import axios from 'axios';
 import { NavComponent } from '../nav/nav.component';
 import { baseUrl } from '../../../main';
@@ -12,18 +12,24 @@ import { baseUrl } from '../../../main';
   imports: [
     NavComponent,
     ReactiveFormsModule,
-    NgForOf
+    NgForOf,
+    NgIf
   ],
   templateUrl: './add-enseignant.component.html',
   styleUrls: ['./add-enseignant.component.css']
 })
-export class AddEnseignantComponent {
+export class AddEnseignantComponent implements OnInit {
   form: FormGroup;
+  enseignants: any[] = []; // To store the list of existing enseignants
   submitting = false; // Flag to prevent multiple submissions
 
   constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {
     this.form = this.createForm();
     this.addUser(); // Initialize with one user form group
+  }
+
+  ngOnInit(): void {
+    this.loadEnseignants();
   }
 
   private createForm(): FormGroup {
@@ -53,12 +59,23 @@ export class AddEnseignantComponent {
   }
 
   private generatePassword(): string {
-    // Generate a simple password. You can replace this with more complex logic if needed.
     return Math.random().toString(36).slice(-8);
   }
 
+  private async loadEnseignants(): Promise<void> {
+    try {
+      const response = await axios.get(`${baseUrl}/Utilisateurs/profs`);
+      this.enseignants = response.data;
+    } catch (error) {
+      console.error('Error loading enseignants:', error);
+      this.snackBar.open('Erreur lors du chargement des enseignants', 'Fermer', {
+        duration: 3000
+      });
+    }
+  }
+
   async onSubmit(): Promise<void> {
-    if (this.submitting) return; // Prevent multiple submissions
+    if (this.submitting) return;
     this.submitting = true;
 
     try {
@@ -69,7 +86,7 @@ export class AddEnseignantComponent {
         const response = await axios.post(`${baseUrl}/Utilisateurs/enseignant`, {
           prenom: data.prenom,
           nom: data.nom,
-          password: this.generatePassword(),
+          password: '123456',
           email: data.email
         });
         this.snackBar.open(`Enseignant ${data.prenom} ajouté avec succès`, 'Fermer', {
@@ -79,13 +96,14 @@ export class AddEnseignantComponent {
       });
 
       await Promise.all(promises);
+      await this.loadEnseignants(); // Reload the list of enseignants after adding new ones
     } catch (error) {
       console.error('Error adding enseignant:', error);
       this.snackBar.open('Erreur lors de l\'ajout de l\'enseignant', 'Fermer', {
         duration: 3000
       });
     } finally {
-      this.submitting = false; // Reset the flag after submission
+      this.submitting = false;
     }
   }
 

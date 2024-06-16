@@ -1,6 +1,16 @@
 <app-nav></app-nav>
 
 <div class="container mt-5">
+  <!-- Display existing enseignants -->
+  <div *ngIf="enseignants.length > 0" class="existing-enseignants mb-5">
+    <h3>Liste des Enseignants</h3>
+    <ul class="list-group">
+      <li *ngFor="let enseignant of enseignants" class="list-group-item">
+         {{ enseignant.fullName }}   - {{ enseignant.email }}
+      </li>
+    </ul>
+  </div>
+
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div formArrayName="users">
       <div *ngFor="let user of users.controls; let i = index" [formGroupName]="i" class="user-form-group mb-3 border rounded p-3">

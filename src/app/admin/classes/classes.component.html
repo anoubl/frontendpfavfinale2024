@@ -5,8 +5,8 @@
     <div formArrayName="classes">
       <div *ngFor="let class of classes.controls; let i = index" [formGroupName]="i" class="class-form-group mb-3 border rounded p-3">
         <div class="form-group">
-          <label for="anneeUniversitaire-{{i}}">Année Universitaire:</label>
-          <input type="text" id="anneeUniversitaire-{{i}}" formControlName="anneeUniversitaire" class="form-control">
+          <label for="annee-{{i}}">Année Universitaire:</label>
+          <input type="text" id="anneeUniversitaire-{{i}}" formControlName="annee" class="form-control">
         </div>
         <button *ngIf="!anneeUniversitaireSelected[i]" type="button" class="btn btn-primary mt-3" (click)="selectAnneeUniversitaire(i)">Sélectionner</button>
 
@@ -31,7 +31,7 @@
           </div>
           <div class="form-group">
             <label for="groupe-{{i}}">Groupe:</label>
-            <select id="groupe-{{i}}" formControlName="groupe" class="form-control">
+            <select id="groupe-{{i}}" formControlName="groupes" class="form-control">
               <option value="1">Groupe 1</option>
               <option value="2">Groupe 2</option>
               <option value="3">Groupe 3</option>
