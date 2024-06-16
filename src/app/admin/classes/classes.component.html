@@ -1,14 +1,14 @@
-<!-- classes.component.html -->
 <app-nav></app-nav>
 <div class="container">
   <div class="row">
     <div class="col-md-6">
-      <h2>Sélectionner une année universitaire </h2>
+      <h2>Sélectionner une année universitaire</h2>
       <form>
         <div class="form-group">
           <label>Sélectionner une année universitaire:</label>
-          <select class="form-control" [(ngModel)]="anneeSelectionnee" name="anneeUniversitaire" (change)="filtrerClasses()">
-            <option *ngFor="let annee of anneesUniversitaires" [value]="annee">{{ annee }}</option>
+          <select class="form-control" [(ngModel)]="anneeSelectionnee" name="anneeUniversitaire" (change)="onAnneeChange()">
+            <option value="" disabled selected>Veuillez sélectionner une année universitaire</option>
+            <option *ngFor="let annee of anneesUniversitaires" [value]="annee">{{ parseInt(annee) - 1 }}/{{ annee }}</option>
           </select>
         </div>
 
@@ -16,7 +16,7 @@
           <h3>Liste des classes pour l'année {{ anneeSelectionnee }}</h3>
           <ul class="list-group">
             <li class="list-group-item" *ngFor="let classe of classes">
-              {{ classe.niveau }} - {{ classe.specialite }} ({{ classe.nombreGroupes }} groupes)
+              {{ classe.niveau }} - {{ classe.specialite }} ({{ classe.groupes }} groupes)
             </li>
           </ul>
         </div>
@@ -26,10 +26,7 @@
     <div class="col-md-6">
       <h2>Ajouter une nouvelle classe</h2>
       <form class="form-inline">
-        <div class="form-group mr-2">
-          <label class="mr-2">Année universitaire:</label>
-          <input type="text" class="form-control" [(ngModel)]="nouvelleClasse.anneeUniversitaire" name="anneeUniversitaire" placeholder="Année universitaire">
-        </div>
+
 
         <div class="form-group mr-2">
           <label class="mr-2">Niveau:</label>
@@ -43,7 +40,7 @@
 
         <div class="form-group mr-2">
           <label class="mr-2">Nombre de groupes:</label>
-          <input type="number" class="form-control" [(ngModel)]="nouvelleClasse.nombreGroupes" name="nombreGroupes" placeholder="Nombre de groupes">
+          <input type="number" class="form-control" [(ngModel)]="nouvelleClasse.groupes" name="groupes" placeholder="Nombre de groupes">
         </div>
 
         <button type="button" class="btn btn-primary" (click)="ajouterClasse()">Enregistrer</button>
