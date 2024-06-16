@@ -1,58 +1,48 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar'; // Import MatSnackBar for notifications
-import { NgForOf } from '@angular/common';
-import { NavComponent } from '../nav/nav.component';
-import axios from 'axios';
-import {baseUrl} from "../../../main"; // Axios for HTTP requests
+import {FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule} from '@angular/forms';
+import {NgForOf} from "@angular/common";
+import {NavComponent} from "../nav/nav.component";
+
+interface Matiere {
+  code: string;
+  intitule: string;
+}
 
 @Component({
   selector: 'app-matieres',
   templateUrl: './matieres.component.html',
-  styleUrls: ['./matieres.component.css'],
   standalone: true,
   imports: [
-    ReactiveFormsModule,
     NgForOf,
-    NavComponent,
-     // Ensure MatSnackBar is included in standalone components
-  ]
+    ReactiveFormsModule,
+    NavComponent
+  ],
+  styleUrls: ['./matieres.component.css']
 })
 export class MatieresComponent {
+  matieres: Matiere[] = [
+    { code: 'M001', intitule: 'Mathématiques' },
+    { code: 'F002', intitule: 'Physique' },
+    { code: 'C003', intitule: 'Chimie' }
+  ];
+
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {
+  constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      matieres: this.fb.array([])
-    });
-    this.addMatiere();
-  }
-
-  get matieres(): FormArray {
-    return this.form.get('matieres') as FormArray;
-  }
-
-  addMatiere(): void {
-    const matiereFormGroup = this.fb.group({
       code: ['', Validators.required],
-      label: ['', Validators.required]
-    });
-    this.matieres.push(matiereFormGroup);
-  }
-
-  removeMatiere(index: number): void {
-    this.matieres.removeAt(index);
-  }
-
-  onSubmit(): void {
-    this.matieres.controls.forEach((matiere, index) => {
-      axios.post(baseUrl+'/matieres', matiere.value)
-        .then(response => {
-          this.snackBar.open(`Submission successful for Matiere ${index + 1}`, 'Close', { duration: 3000 });
-        })
-        .catch(error => {
-          this.snackBar.open(`Failed to submit Matiere ${index + 1}: ${error.message}`, 'Close', { duration: 3000 });
-        });
+      intitule: ['', Validators.required]
     });
   }
+
+  ajouterMatiere(): void {
+    const newMatiere: Matiere = {
+      code: this.form.value.code,
+      intitule: this.form.value.intitule
+    };
+    this.matieres.push(newMatiere);
+    this.form.reset(); // Reset form after adding matière
+  }
+
+
 }
