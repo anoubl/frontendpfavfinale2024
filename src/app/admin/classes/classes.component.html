@@ -30,6 +30,7 @@
       <h2>Ajouter de nouvelles classes</h2>
       <form>
         <div *ngFor="let classe of nouvellesClasses; let i = index" class="mb-3 p-3 border rounded">
+          <label>Classe {{i+1}}</label>
           <div class="form-group">
             <label for="niveau{{i}}">Niveau:</label>
             <input type="text" class="form-control" id="niveau{{i}}" [(ngModel)]="classe.niveau" name="niveau{{i}}" placeholder="Niveau">
