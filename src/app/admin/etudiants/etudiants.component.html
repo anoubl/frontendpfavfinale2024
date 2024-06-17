@@ -1,39 +1,76 @@
 <app-nav></app-nav>
 
-<div class="container mt-5">
+<div >
   <div class="row">
-    <div class="col-md-6">
+    <!-- Colonne pour la liste des étudiants -->
+    <div class="col-md-4">
       <h2>Liste des étudiants</h2>
-      <ul class="list-group">
-        <li class="list-group-item" *ngFor="let etudiant of etudiants">
-          <button type="button" class="btn btn-link" (click)="selectionnerEtudiant(etudiant)">
-            {{ etudiant.matricule }} - {{ etudiant.prenom }} {{ etudiant.nom }} ({{ etudiant.email }})
+      <ul class="list-group shadow-sm">
+        <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let etudiant of etudiants">
+          <span>
+            <strong>{{ etudiant.matricule }}</strong> - {{ etudiant.prenom }} {{ etudiant.nom }} ({{ etudiant.email }})
+          </span>
+          <button type="button" class="btn btn-outline-primary btn-sm" (click)="selectionnerEtudiant(etudiant)">
+            Voir
           </button>
         </li>
       </ul>
     </div>
 
-    <div class="col-md-6">
-      <h2>Ajouter un nouvel étudiant</h2>
-      <form (submit)="ajouterEtudiant()">
-        <div class="form-group">
-          <label>Matricule:</label>
-          <input type="text" class="form-control" [(ngModel)]="nouveauEtudiant.matricule" name="matricule">
+    <!-- Colonne pour le formulaire d'ajout individuel -->
+    <div class="col-md-4">
+      <h2>Ajouter un étudiant</h2>
+      <form (submit)="ajouterEtudiants()">
+        <div *ngFor="let etudiant of nouveauxEtudiants; let i = index" class="mb-3 border p-3 rounded shadow-sm">
+          <h4 class="mb-3">Étudiant {{i + 1}}</h4>
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Matricule:</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" [(ngModel)]="etudiant.matricule" name="matricule{{i}}" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Prénom:</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" [(ngModel)]="etudiant.prenom" name="prenom{{i}}" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Nom:</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" [(ngModel)]="etudiant.nom" name="nom{{i}}" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Email:</label>
+            <div class="col-sm-8">
+              <input type="email" class="form-control" [(ngModel)]="etudiant.email" name="email{{i}}" required>
+            </div>
+          </div>
+          <button type="button" class="btn btn-danger mt-2" (click)="supprimerEtudiant(i)">Supprimer</button>
         </div>
-        <div class="form-group">
-          <label>Prénom:</label>
-          <input type="text" class="form-control" [(ngModel)]="nouveauEtudiant.prenom" name="prenom">
-        </div>
-        <div class="form-group">
-          <label>Nom:</label>
-          <input type="text" class="form-control" [(ngModel)]="nouveauEtudiant.nom" name="nom">
-        </div>
-        <div class="form-group">
-          <label>Email:</label>
-          <input type="email" class="form-control" [(ngModel)]="nouveauEtudiant.email" name="email">
-        </div>
-        <button type="submit" class="btn btn-primary">Ajouter</button>
+        <button type="button" class="btn btn-secondary mt-3" (click)="ajouterNouveauEtudiant()">Ajouter un autre étudiant</button>
+        <button type="submit" class="btn btn-primary mt-3">Enregistrer tous les étudiants</button>
       </form>
+    </div>
+
+    <!-- Colonne pour le formulaire d'ajout massif amélioré -->
+    <div class="col-md-4">
+      <h2>Ajouter des étudiants en masse</h2>
+      <div class="card border-primary shadow-sm">
+        <div class="card-body">
+          <form (submit)="uploadCsv($event)">
+            <div class="form-group">
+              <label class="font-weight-bold">Uploader un fichier CSV:</label>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" (change)="onFileChange($event)" accept=".csv" required>
+                <label class="custom-file-label">Choisir un fichier CSV...</label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block mt-3">Uploader</button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -6,8 +6,8 @@ import {AccueilEtudiantComponent} from "./etudiant/accueil/accueil.component";
 import {AddEnseignantComponent} from "./admin/add-enseignant/add-enseignant.component";
 import {EtudiantsComponent} from "./admin/etudiants/etudiants.component";
 import {ClassesComponent} from "./admin/classes/classes.component";
-import {MatieresComponent} from "./admin/matieres/matieres.component";
 import {PlanificationComponent} from "./admin/planification/planification.component";
+import {MatieresComponent} from "./admin/matieres/matieres.component";
 
 
 export const routes: Routes = [

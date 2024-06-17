@@ -12,10 +12,6 @@ interface Classe {
   groupes: number;
 }
 
-interface AnneeResponse {
-  annee: string;
-}
-
 @Component({
   selector: 'app-classes',
   templateUrl: './classes.component.html',
@@ -31,64 +27,66 @@ interface AnneeResponse {
 export class ClassesComponent implements OnInit {
   classes: Classe[] = [];
   anneeSelectionnee: string = '';
-  nouvelleClasse: Classe = {
-    annee: '',  // Initialement vide
-    niveau: '',
-    specialite: '',
-    groupes: 0
-  };
+  nouvellesClasses: Classe[] = [];
+  notification: { message: string, type: string } | null = null;
 
-  anneesUniversitaires: string[] = [];
+  anneesUniversitaires: string[] = ['2021', '2022', '2023', '2024', '2025'];
 
   constructor() {}
 
   ngOnInit(): void {
-    this.fetchAnnees();
+    this.ajouterNouvelleClasse();  // Initialise la liste de nouvelles classes
   }
 
-  private async fetchAnnees(): Promise<void> {
-    try {
-      const response = await axios.get<AnneeResponse[]>(`${baseUrl}/classes/listeAnnees`);
-      this.anneesUniversitaires = response.data.map(element => element.annee);
-      console.log(this.anneesUniversitaires);
-    } catch (error) {
-      console.error('Error fetching annees:', error);
-    }
-  }
-
+  // Récupère les classes pour l'année sélectionnée
   private async fetchClasses(): Promise<void> {
     if (!this.anneeSelectionnee) return;
     try {
       const response = await axios.get<Classe[]>(`${baseUrl}/classes/annee/${this.anneeSelectionnee}`);
       this.classes = response.data;
     } catch (error) {
-      console.error('Error fetching classes:', error);
+      this.showNotification('Erreur lors de la récupération des classes', 'danger');
     }
   }
 
-  async ajouterClasse(): Promise<void> {
+  // Ajoute toutes les classes de la liste nouvellesClasses
+  async ajouterClasses(): Promise<void> {
     try {
-      // Assurez-vous que nouvelleClasse.année est mise à jour avec anneeSelectionnee actuel
-      this.nouvelleClasse.annee = this.anneeSelectionnee;
-
-      const response = await axios.post<Classe>(`${baseUrl}/classes`, this.nouvelleClasse);
-      this.classes.push(response.data);
-
-      // Réinitialiser nouvelleClasse après l'ajout
-      this.nouvelleClasse = {
-        annee: this.anneeSelectionnee, // Mettre à jour avec l'année sélectionnée
-        niveau: '',
-        specialite: '',
-        groupes: 0
-      };
+      for (let classe of this.nouvellesClasses) {
+        classe.annee = this.anneeSelectionnee;
+        const response = await axios.post<Classe>(`${baseUrl}/classes`, classe);
+        this.classes.push(response.data);
+      }
+      this.showNotification('Classes ajoutées avec succès', 'success');
+      this.nouvellesClasses = [];  // Réinitialise la liste des nouvelles classes
+      this.ajouterNouvelleClasse();  // Ajoute une nouvelle classe vide
     } catch (error) {
-      console.error('Error adding class:', error);
+      this.showNotification('Erreur lors de l\'ajout des classes', 'danger');
     }
   }
 
+  // Ajoute une nouvelle classe vide à la liste nouvellesClasses
+  ajouterNouvelleClasse() {
+    this.nouvellesClasses.push({
+      annee: this.anneeSelectionnee,
+      niveau: '',
+      specialite: '',
+      groupes: 0
+    });
+  }
+
+  // Appelée lors du changement de l'année sélectionnée
   onAnneeChange(): void {
     this.fetchClasses();
   }
 
-  protected readonly parseInt = parseInt;
+  // Affiche une notification avec un message et un type
+  showNotification(message: string, type: string) {
+    this.notification = { message, type };
+    setTimeout(() => {
+      this.notification = null;
+    }, 3000);
+  }
+
+  protected readonly parseInt = parseInt;  // Permet de convertir les chaînes en nombres
 }

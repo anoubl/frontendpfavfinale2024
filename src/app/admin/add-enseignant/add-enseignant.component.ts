@@ -1,95 +1,94 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { NgForOf, NgIf } from "@angular/common";
 import { NavComponent } from "../nav/nav.component";
-import { NgForOf } from "@angular/common";
 import axios from 'axios';
-import {baseUrl} from "../../../main";
+import { baseUrl } from "../../../main";
 
 interface Enseignant {
   prenom: string;
   nom: string;
   email: string;
-  fullName ? : String ;
-
 }
 
-interface addEnseignant {
-  prenom: string;
-  nom: string;
-  email: string;
-  password ? : String ;
-
-}
 @Component({
   selector: 'app-add-enseignant',
   templateUrl: './add-enseignant.component.html',
+  styleUrls: ['./add-enseignant.component.css'],
   standalone: true,
   imports: [
-    NavComponent,
+    FormsModule,
     ReactiveFormsModule,
-    NgForOf
+    NgForOf,
+    NgIf,
+    NavComponent
   ],
-  styleUrls: ['./add-enseignant.component.css']
 })
 export class AddEnseignantComponent implements OnInit {
-  enseignants: Enseignant[] = []; // Initialize with an empty array
+  enseignants: Enseignant[] = [];
+  nouveauxEnseignants: Enseignant[] = [];
+  data : any ;
   form: FormGroup;
+  notification: { message: string, type: string } | null = null;
 
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {
-    this.form = this.createForm();
-  }
-
-  ngOnInit(): void {
-    this.fetchEnseignants();
-  }
-
-  private createForm(): FormGroup {
-    return this.fb.group({
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({
       prenom: ['', Validators.required],
       nom: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
     });
   }
 
-  private async fetchEnseignants(): Promise<void> {
+  ngOnInit(): void {
+    this.ajouterNouvelEnseignant();  // Initialise la liste de nouveaux enseignants
+    this.fetchEnseignants(); // Récupérer les enseignants existants au démarrage
+  }
+
+  async fetchEnseignants(): Promise<void> {
     try {
       const response = await axios.get<Enseignant[]>(`${baseUrl}/Utilisateurs/profs`);
       this.enseignants = response.data;
     } catch (error) {
-      console.error('Error fetching enseignants:', error);
-      this.snackBar.open('Erreur lors de la récupération des enseignants', 'Fermer', {
-        duration: 3000
-      });
+      this.showNotification('Erreur lors de la récupération des enseignants', 'danger');
     }
   }
 
-  async onSubmit(): Promise<void> {
-    const enseignant: addEnseignant = {
-      prenom: this.form.value.prenom,
-      nom: this.form.value.nom,
-      email: this.form.value.email,
-      password : ''
-    };
-
+  async ajouterEnseignants(): Promise<void> {
     try {
-      const response = await axios.post(`${baseUrl}/Utilisateurs/enseignant`, enseignant);
-      if (response.status === 200) {
-        this.enseignants.push(response.data)
-
-        this.snackBar.open(`Enseignant ${enseignant.prenom} ajouté avec succès`, 'Fermer', {
-          duration: 3000
-        });
-
-        this.form.reset();
-      } else {
-        throw new Error('Failed to add enseignant');
+      for (let enseignant of this.nouveauxEnseignants) {
+        const response = await axios.post<Enseignant>(`${baseUrl}/Utilisateurs/enseignant`, enseignant);
+        this.enseignants.push(response.data);
       }
+      this.showNotification('Enseignants ajoutés avec succès', 'success');
+      this.nouveauxEnseignants = [];  // Réinitialise la liste des nouveaux enseignants
+      this.ajouterNouvelEnseignant();  // Ajoute un nouvel enseignant vide
     } catch (error) {
-      console.error('Error adding enseignant:', error);
-      this.snackBar.open('Erreur lors de l\'ajout de l\'enseignant', 'Fermer', {
-        duration: 3000
-      });
+      this.showNotification('Erreur lors de l\'ajout des enseignants', 'danger');
     }
+  }
+
+  ajouterNouvelEnseignant() {
+    this.nouveauxEnseignants.push({
+      prenom: '',
+      nom: '',
+      email: ''
+    });
+  }
+
+  onSubmit() {
+    if (this.form.valid) {
+      this.nouveauxEnseignants.push(this.form.value);
+      this.form.reset();
+    } else {
+      this.showNotification('Veuillez remplir tous les champs correctement', 'danger');
+    }
+  }
+
+  showNotification(message: string, type: string) {
+    this.notification = { message, type };
+    setTimeout(() => {
+      this.notification = null;
+    }, 3000);
   }
 }
