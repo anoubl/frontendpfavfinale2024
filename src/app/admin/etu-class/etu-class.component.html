@@ -1,1 +1,9 @@
 <app-nav></app-nav>
+<div class="container mt-4">
+  <h2>Liste des étudiants pour le groupe {{ groupe }} de l'année {{ annee }}</h2>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let etudiant of etudiants">
+      {{ etudiant.nom }} {{ etudiant.prenom }} - {{ etudiant.matricule }}
+    </li>
+  </ul>
+</div>

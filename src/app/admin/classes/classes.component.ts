@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router'; // Import Router
 import { FormsModule } from "@angular/forms";
 import { NgForOf, NgIf } from "@angular/common";
 import { NavComponent } from "../nav/nav.component";
@@ -32,7 +33,7 @@ export class ClassesComponent implements OnInit {
 
   anneesUniversitaires: string[] = ['2021', '2022', '2023', '2024', '2025'];
 
-  constructor() {}
+  constructor(private router: Router) {} // Inject Router
 
   ngOnInit(): void {
     this.ajouterNouvelleClasse();  // Initialise la liste de nouvelles classes
@@ -86,6 +87,11 @@ export class ClassesComponent implements OnInit {
     setTimeout(() => {
       this.notification = null;
     }, 3000);
+  }
+
+  // Méthode pour naviguer vers une autre route
+  redirectToAnotherRoute(): void {
+    this.router.navigate(['/etu-class']); // Replace '/other-route' with your desired route path
   }
 
   protected readonly parseInt = parseInt;  // Permet de convertir les chaînes en nombres
