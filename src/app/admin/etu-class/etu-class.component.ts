@@ -22,8 +22,8 @@ interface Etudiant {
   styleUrls: ['./etu-class.component.css']
 })
 export class EtuClassComponent implements OnInit {
-  annee: string;
-  groupe: number;
+  annee: string=" ";
+  groupe: number = 0;
   etudiants: Etudiant[] = [];
 
   constructor(private route: ActivatedRoute) {}
