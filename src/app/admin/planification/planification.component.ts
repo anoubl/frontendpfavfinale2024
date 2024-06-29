@@ -1,27 +1,7 @@
 import { Component } from '@angular/core';
-import {NavComponent} from "../nav/nav.component";
-import {FormsModule} from "@angular/forms";
-import {NgForOf} from "@angular/common";
-
-interface Matiere {
-  id: number;
-  nom: string;
-}
-
-interface Enseignant {
-  id: number;
-  nom: string;
-  prenom: string;
-}
-
-interface PlanMatiere {
-  id: number;
-  semestre: number;
-  classe: string;
-  groupe: number;
-  matiere: Matiere;
-  enseignants: Enseignant[];
-}
+import { FormsModule } from '@angular/forms';
+import { NavComponent } from '../nav/nav.component';
+import { NgForOf, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-planification',
@@ -30,69 +10,63 @@ interface PlanMatiere {
   imports: [
     NavComponent,
     FormsModule,
-    NgForOf
+    NgForOf,
+    NgIf
   ],
   styleUrls: ['./planification.component.css']
 })
 export class PlanificationComponent {
-  semestre: number = 1;
-  classe: string = 'A';
-  groupe: number = 1;
-  matieres: Matiere[] = [
-    { id: 1, nom: 'Mathématiques' },
-    { id: 2, nom: 'Physique' },
-    { id: 3, nom: 'Chimie' },
-    { id: 4, nom: 'Informatique' }
-  ];
-  enseignants: Enseignant[] = [
-    { id: 1, nom: 'Durand', prenom: 'Jean' },
-    { id: 2, nom: 'Lefevre', prenom: 'Sophie' },
-    { id: 3, nom: 'Garcia', prenom: 'Pierre' },
-    { id: 4, nom: 'Martin', prenom: 'Marie' }
-  ];
-  planMatiere: PlanMatiere[] = [
-    {
-      id: 1,
-      semestre: 1,
-      classe: 'A',
-      groupe: 1,
-      matiere: { id: 1, nom: 'Mathématiques' },
-      enseignants: [
-        { id: 1, nom: 'Durand', prenom: 'Jean' },
-        { id: 2, nom: 'Lefevre', prenom: 'Sophie' }
-      ]
-    },
-    {
-      id: 2,
-      semestre: 1,
-      classe: 'A',
-      groupe: 2,
-      matiere: { id: 2, nom: 'Physique' },
-      enseignants: [
-        { id: 3, nom: 'Garcia', prenom: 'Pierre' },
-        { id: 4, nom: 'Martin', prenom: 'Marie' }
-      ]
-    }
+  selection = {
+    semester: '',
+    classe: '',
+    groupe: ''
+  };
+
+  semesters: string[] = ['Semestre 1', 'Semestre 2', 'Semestre 3'];
+  classes: { [key: string]: string[] } = {
+    'Semestre 1': ['Classe 1A', 'Classe 1B'],
+    'Semestre 2': ['Classe 2A', 'Classe 2B'],
+    'Semestre 3': ['Classe 3A', 'Classe 3B']
+  };
+  groups: { [key: string]: string[] } = {
+    'Classe 1A': ['Groupe 1', 'Groupe 2'],
+    'Classe 1B': ['Groupe 3', 'Groupe 4'],
+    'Classe 2A': ['Groupe 5', 'Groupe 6'],
+    'Classe 2B': ['Groupe 7', 'Groupe 8'],
+    'Classe 3A': ['Groupe 9', 'Groupe 10'],
+    'Classe 3B': ['Groupe 11', 'Groupe 12']
+  };
+
+  availableClasses: string[] = [];
+  availableGroups: string[] = [];
+  selectedSubjects: { name: string, teacher: string | undefined }[] = [];
+
+  subjects = [
+    { name: 'Mathématiques', teacher: undefined },
+    { name: 'Physique', teacher: undefined },
+    { name: 'Chimie', teacher: undefined }
   ];
 
-  ajouterPlanMatiere(): void {
-    this.planMatiere.push({
-      id: this.planMatiere.length + 1,
-      semestre: this.semestre,
-      classe: this.classe,
-      groupe: this.groupe,
-      matiere: { id: 0, nom: '' },
-      enseignants: []
-    });
+  teachers: string[] = ['Mme Dupont', 'M. Martin', 'Mme Durand'];
+
+  onSemesterChange() {
+    this.availableClasses = this.classes[this.selection.semester] || [];
+    this.availableGroups = [];
+    this.selection.classe = '';
+    this.selection.groupe = '';
   }
 
-  enregistrerPlanMatiere(plan: PlanMatiere): void {
-    console.log('Plan de matière à enregistrer :', plan);
-    // Logique d'enregistrement à implémenter
+  onClassChange() {
+    this.availableGroups = this.groups[this.selection.classe] || [];
+    this.selection.groupe = '';
   }
 
-  getMatiereEnseignants(plan: PlanMatiere): string {
-    const enseignants = plan.enseignants.map(e => e.nom).join(', ');
-    return `${plan.matiere.nom} - ${enseignants}`;
+  onSubmit() {
+    this.selectedSubjects = [...this.subjects]; // Ex: réinitialiser la liste des matières
+  }
+
+  onTeacherChange(subject: { name: string, teacher: string | undefined }, event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    subject.teacher = selectElement.value || undefined;
   }
 }

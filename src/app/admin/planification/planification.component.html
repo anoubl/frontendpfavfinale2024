@@ -1,36 +1,36 @@
+<!-- planification.component.html -->
 <app-nav></app-nav>
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-md-6 mb-4">
-      <h2>Planification des matières</h2>
-      <form>
-        <div class="form-group">
-          <label for="selectSemestre">Sélectionner le semestre :</label>
-          <select class="form-control" id="selectSemestre" [(ngModel)]="semestre" name="selectSemestre">
-            <option value="1">Semestre 1</option>
-            <option value="2">Semestre 2</option>
-          </select>
-        </div>
+<div>
+  <h1>Formulaire de sélection</h1>
+  <form (ngSubmit)="onSubmit()" #selectionForm="ngForm">
+    <label for="semester">Semestre:</label>
+    <select id="semester" required [(ngModel)]="selection.semester" name="semester" (change)="onSemesterChange()">
+      <option *ngFor="let semester of semesters" [value]="semester">{{ semester }}</option>
+    </select><br/>
 
-        <div class="form-group">
-          <label for="selectClasse">Sélectionner la classe :</label>
-          <input type="text" class="form-control" id="selectClasse" [(ngModel)]="classe" name="selectClasse" readonly>
-        </div>
+    <label for="classe">Classe:</label>
+    <select id="classe" required [(ngModel)]="selection.classe" name="classe" (change)="onClassChange()">
+      <option *ngFor="let classe of availableClasses" [value]="classe">{{ classe }}</option>
+    </select><br/>
 
-        <div class="form-group">
-          <label for="selectGroupe">Sélectionner le groupe :</label>
-          <input type="number" class="form-control" id="selectGroupe" [(ngModel)]="groupe" name="selectGroupe">
-        </div>
+    <label for="groupe">Groupe:</label>
+    <select id="groupe" required [(ngModel)]="selection.groupe" name="groupe">
+      <option *ngFor="let groupe of availableGroups" [value]="groupe">{{ groupe }}</option>
+    </select><br/>
 
-        <h3>Liste des matières pour la classe {{ classe }} et le groupe {{ groupe }}</h3>
-        <ul class="list-group">
-          <li class="list-group-item" *ngFor="let plan of planMatiere">
-            {{ getMatiereEnseignants(plan) }}
-          </li>
-        </ul>
+    <button type="submit">Sélectionner</button>
+  </form>
 
-        <button type="button" class="btn btn-info mt-3" (click)="ajouterPlanMatiere()">Ajouter une nouvelle matière</button>
-      </form>
-    </div>
+  <div *ngIf="selectedSubjects.length > 0">
+    <h2>Matières</h2>
+    <ul>
+      <li *ngFor="let subject of selectedSubjects">
+        {{ subject.name }} - Enseigné par: {{ subject.teacher || 'Non assigné' }}
+        <select (change)="onTeacherChange(subject, $event)">
+          <option >-- Sélectionner un enseignant --</option>
+          <option *ngFor="let teacher of teachers" [value]="teacher">{{ teacher }}</option>
+        </select>
+      </li>
+    </ul>
   </div>
 </div>
