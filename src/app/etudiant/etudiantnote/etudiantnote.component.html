@@ -1,0 +1,35 @@
+<app-navetudiant></app-navetudiant>
+<h1>Notes d' Étudiants</h1>
+
+<label for="anneeSemestre">Année/Semestre :</label>
+<select id="anneeSemestre" [(ngModel)]="selectedAnneeSemestre" (change)="selectionner()">
+  <option *ngFor="let option of optionsAnneeSemestre" [value]="option">{{ option }}</option>
+</select>
+<br><br>
+
+<table *ngIf="tableVisible">
+  <thead>
+  <tr>
+    <th>Matière</th>
+    <th>Projet</th>
+    <th>%</th>
+    <th>Contrôle 1</th>
+    <th>%</th>
+    <th>Contrôle 2</th>
+    <th>%</th>
+    <th>Moyenne</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let matiere of selectedData">
+    <td>{{ matiere.matiere }}</td>
+    <td>{{ notes[matiere.matiere]?.projet || 0 }}</td>
+    <td>{{ matiere.projet }}%</td>
+    <td>{{ notes[matiere.matiere]?.controle1 || 0 }}</td>
+    <td>{{ matiere.controle1 }}%</td>
+    <td>{{ notes[matiere.matiere]?.controle2 || 0 }}</td>
+    <td>{{ matiere.controle2 }}%</td>
+    <td>{{ calculerMoyenne(matiere) | number: '1.2-2' }}</td>
+  </tr>
+  </tbody>
+</table>
