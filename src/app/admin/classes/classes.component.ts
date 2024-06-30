@@ -11,6 +11,8 @@ interface Classe {
   niveau: string;
   specialite: string;
   groupes: number;
+
+  id : number;
 }
 
 @Component({
@@ -72,7 +74,8 @@ export class ClassesComponent implements OnInit {
       annee: this.anneeSelectionnee,
       niveau: '',
       specialite: '',
-      groupes: 0
+      groupes: 0,
+      id:0
     });
   }
 
@@ -95,4 +98,9 @@ export class ClassesComponent implements OnInit {
   }
 
   protected readonly parseInt = parseInt;  // Permet de convertir les chaînes en nombres
+  redirigerVersClasse(classeId: number): void {
+    // Redirige vers la route avec l'ID de la classe
+    this.router.navigate(['/etu-classe', classeId]); // Modifiez 'classe' en 'etu-classe'
+  }
+
 }

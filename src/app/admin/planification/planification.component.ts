@@ -1,72 +1,116 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import axios from 'axios';
+import { MatDialog } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
-import { NavComponent } from '../nav/nav.component';
-import { NgForOf, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { NavComponent } from "../nav/nav.component";
+import { baseUrl } from "../../../main";
 
 @Component({
   selector: 'app-planification',
   templateUrl: './planification.component.html',
   standalone: true,
-  imports: [
-    NavComponent,
-    FormsModule,
-    NgForOf,
-    NgIf
-  ],
-  styleUrls: ['./planification.component.css']
+  imports: [FormsModule, CommonModule, NavComponent],
 })
-export class PlanificationComponent {
-  selection = {
-    semester: '',
-    classe: '',
-    groupe: ''
-  };
+export class PlanificationComponent implements OnInit {
+  semesters: any[] = [];
+  classes: any[] = [];
+  groups: any[] = [];
+  tableData: any[] = [];
+  matieres: any[] = [];
+  enseignants: any[] = [];
+  selectedSemester: number = 0;
+  selectedClass: number = 0;
+  selectedGroup: number = 0;
+  showModal: boolean = false;
+  selectedMatiere: string = '';
+  selectedEnseignant: number = 0;
 
-  semesters: string[] = ['Semestre 1', 'Semestre 2', 'Semestre 3'];
-  classes: { [key: string]: string[] } = {
-    'Semestre 1': ['Classe 1A', 'Classe 1B'],
-    'Semestre 2': ['Classe 2A', 'Classe 2B'],
-    'Semestre 3': ['Classe 3A', 'Classe 3B']
-  };
-  groups: { [key: string]: string[] } = {
-    'Classe 1A': ['Groupe 1', 'Groupe 2'],
-    'Classe 1B': ['Groupe 3', 'Groupe 4'],
-    'Classe 2A': ['Groupe 5', 'Groupe 6'],
-    'Classe 2B': ['Groupe 7', 'Groupe 8'],
-    'Classe 3A': ['Groupe 9', 'Groupe 10'],
-    'Classe 3B': ['Groupe 11', 'Groupe 12']
-  };
+  constructor(public dialog: MatDialog) {}
 
-  availableClasses: string[] = [];
-  availableGroups: string[] = [];
-  selectedSubjects: { name: string, teacher: string | undefined }[] = [];
-
-  subjects = [
-    { name: 'Mathématiques', teacher: undefined },
-    { name: 'Physique', teacher: undefined },
-    { name: 'Chimie', teacher: undefined }
-  ];
-
-  teachers: string[] = ['Mme Dupont', 'M. Martin', 'Mme Durand'];
-
-  onSemesterChange() {
-    this.availableClasses = this.classes[this.selection.semester] || [];
-    this.availableGroups = [];
-    this.selection.classe = '';
-    this.selection.groupe = '';
+  ngOnInit(): void {
+    this.getSemesters();
+    this.getClasses();
   }
 
-  onClassChange() {
-    this.availableGroups = this.groups[this.selection.classe] || [];
-    this.selection.groupe = '';
+  async getSemesters(): Promise<void> {
+    try {
+      const response = await axios.get(`${baseUrl}/semestres/labels`);
+      this.semesters = response.data;
+    } catch (error) {
+      console.error('Erreur lors de la récupération des semestres :', error);
+    }
   }
 
-  onSubmit() {
-    this.selectedSubjects = [...this.subjects]; // Ex: réinitialiser la liste des matières
+  async getClasses(): Promise<void> {
+    try {
+      const response = await axios.get(`${baseUrl}/classes`);
+      this.classes = response.data;
+    } catch (error) {
+      console.error('Erreur lors de la récupération des classes :', error);
+    }
   }
 
-  onTeacherChange(subject: { name: string, teacher: string | undefined }, event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    subject.teacher = selectElement.value || undefined;
+  async onClassChange(): Promise<void> {
+    try {
+      const response = await axios.get(`${baseUrl}/groupes/classeWithGroupe/${this.selectedClass}`);
+      this.groups = response.data;
+    } catch (error) {
+      console.error('Erreur lors de la récupération des groupes :', error);
+    }
+  }
+
+  async onGroupChange(): Promise<void> {
+    try {
+      const response = await axios.get(`${baseUrl}/groupes/matierewithenseignant/${this.selectedGroup}`);
+      this.tableData = response.data;
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données du tableau :', error);
+    }
+  }
+
+  openDialog(): void {
+    this.showModal = true;
+    this.getMatieres();
+    this.getEnseignants();
+  }
+
+  async getMatieres(): Promise<void> {
+    try {
+      const response = await axios.get(`${baseUrl}/matieres`);
+      this.matieres = response.data;
+    } catch (error) {
+      console.error('Erreur lors de la récupération des matières :', error);
+    }
+  }
+
+  async getEnseignants(): Promise<void> {
+    try {
+      const response = await axios.get(`${baseUrl}/Utilisateurs/profs`);
+      this.enseignants = response.data;
+    } catch (error) {
+      console.error('Erreur lors de la récupération des enseignants :', error);
+    }
+  }
+
+  async save(): Promise<void> {
+    try {
+      await axios.post(`${baseUrl}/matieres/planification`, {
+        groupeId: this.selectedGroup,
+        semestreId: this.selectedSemester,
+        assignments: [{
+          enseignantId: this.selectedEnseignant,
+          matiereId: this.selectedMatiere
+        }]
+      });
+      this.showModal = false;
+      this.onGroupChange(); // Refresh the table data after adding new assignment
+    } catch (error) {
+      console.error('Erreur lors de l\'affectation de la matière :', error);
+    }
+  }
+
+  onNoClick(): void {
+    this.showModal = false;
   }
 }

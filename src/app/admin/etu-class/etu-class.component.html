@@ -1,9 +1,62 @@
 <app-nav></app-nav>
-<div class="container mt-4">
-  <h2>Liste des étudiants pour le groupe {{ groupe }} de l'année {{ annee }}</h2>
-  <ul class="list-group">
-    <li class="list-group-item" *ngFor="let etudiant of etudiants">
-      {{ etudiant.nom }} {{ etudiant.prenom }} - {{ etudiant.matricule }}
-    </li>
-  </ul>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="groupe">Groupe:</label>
+        <select class="form-control" id="groupe" [(ngModel)]="selectedGroupe">
+          <option *ngFor="let groupe of groupes" [value]="groupe.id">{{ groupe.nom }}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+
+  <br>
+
+  <button class="btn btn-primary" (click)="afficherListeEtudiants()">
+    Afficher la liste des étudiants
+  </button>
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>id</th>
+      <th>nom</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let etudiant of etudiants">
+      <td>{{ etudiant.id }}</td>
+      <td>{{ etudiant.nom }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <button class="btn btn-success" (click)="afficherModalAjouterEtudiant()">
+    Ajouter une ligne
+  </button>
+
+  <div class="modal fade show d-block" tabindex="-1" role="dialog" *ngIf="showModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Ajouter un étudiant</h5>
+
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="etudiant">Sélectionnez un étudiant :</label>
+            <select class="form-control" id="etudiant" [(ngModel)]="selectedEtudiant">
+              <option *ngFor="let etudiant of allEtudiants" [value]="etudiant.id">{{ etudiant.nom }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="enregistrerEtudiant()">Enregistrer</button>
+          <button type="button" class="btn btn-secondary" (click)="showModal = false">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

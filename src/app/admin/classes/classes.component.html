@@ -21,11 +21,12 @@
           <ul class="list-group">
             <li class="list-group-item" *ngFor="let classe of classes">
               {{ classe.niveau }} - {{ classe.specialite }} ({{ classe.groupes }} groupes)
+              <button id="new" class="btn btn-primary" (click)="redirigerVersClasse(classe.id)">voir</button>
+
             </li>
           </ul>
 
           <!-- Ajout du bouton pour la redirection -->
-          <button type="button" class="btn btn-info mt-3" (click)="redirectToAnotherRoute()">detais</button>
         </div>
       </form>
     </div>
