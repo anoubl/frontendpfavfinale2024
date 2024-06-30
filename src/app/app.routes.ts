@@ -9,6 +9,9 @@ import { ClassesComponent } from './admin/classes/classes.component';
 import { PlanificationComponent } from './admin/planification/planification.component';
 import { MatieresComponent } from './admin/matieres/matieres.component';
 import {AuthGuardService} from "./admin/auth-guard.service";
+import {AccueilEnseignantComponent} from "./ensignant/accueil/accueil.component";
+import {SaisieNotesComponent} from "./ensignant/bultin-etudiant/bultin-etudiant.component";
+import {EtudiantNoteComponent} from "./etudiant/etudiantnote/etudiantnote.component";
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirection par défaut vers /login
   { path: 'login', component: LoginComponent },
@@ -19,6 +22,9 @@ export const routes: Routes = [
   { path: 'classes', component: ClassesComponent, canActivate: [AuthGuardService] },
   { path: 'matieres', component: MatieresComponent, canActivate: [AuthGuardService] },
   { path: 'planification', component: PlanificationComponent, canActivate: [AuthGuardService] },
+  { path: 'accueil-enseignant', component: AccueilEnseignantComponent, canActivate: [AuthGuardService] },
+  { path: 'saisie des notes', component: SaisieNotesComponent, canActivate: [AuthGuardService] },
+  { path: 'note-etudiant', component: EtudiantNoteComponent, canActivate: [AuthGuardService] },
   // Autres routes sécurisées par l'AuthGuard
 ];
 

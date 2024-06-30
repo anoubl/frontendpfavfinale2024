@@ -1,1 +1,60 @@
-<p>bultin-etudiant works!</p>
+<app-nav-enseignant></app-nav-enseignant>
+<h1>Saisie des Notes</h1>
+
+<p><strong>Sélectionnez les critères :</strong></p>
+
+<label for="semestre">Semestre :</label>
+<select id="semestre" [(ngModel)]="semestre" (change)="updateMatiereOptions()">
+  <option value="S1">S1</option>
+  <option value="S2">S2</option>
+  <option value="S3">S3</option>
+  <option value="S4">S4</option>
+</select>
+<br><br>
+
+<label for="matiere">Matière :</label>
+<select id="matiere" [(ngModel)]="matiere" (change)="updateClasseOptions()">
+  <option *ngFor="let option of optionsMatiere" [value]="option">{{ option }}</option>
+</select>
+<br><br>
+
+<label for="classe">Classe :</label>
+<select id="classe" [(ngModel)]="classe" (change)="updateGroupeOptions()">
+  <option *ngFor="let option of optionsClasse" [value]="option">{{ option }}</option>
+</select>
+<br><br>
+
+<label for="groupe">Groupe :</label>
+<select id="groupe" [(ngModel)]="groupe">
+  <option *ngFor="let option of optionsGroupe" [value]="option">{{ option }}</option>
+</select>
+<br><br>
+
+<button (click)="selectionner()">Sélectionner</button>
+
+<table *ngIf="tableVisible">
+  <thead>
+  <tr>
+    <th>Nom</th>
+    <th>Prénom</th>
+    <th>TP</th>
+    <th>Projet</th>
+    <th>Contrôle 1</th>
+    <th>Contrôle 2</th>
+    <th>Moyenne</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let etudiant of etudiants">
+    <td>{{ etudiant.nom }}</td>
+    <td>{{ etudiant.prenom }}</td>
+    <td><input type="text" [(ngModel)]="etudiant.tp" (input)="calculerMoyenne(etudiant)"></td>
+    <td><input type="text" [(ngModel)]="etudiant.projet" (input)="calculerMoyenne(etudiant)"></td>
+    <td><input type="text" [(ngModel)]="etudiant.controle1" (input)="calculerMoyenne(etudiant)"></td>
+    <td><input type="text" [(ngModel)]="etudiant.controle2" (input)="calculerMoyenne(etudiant)"></td>
+    <td>{{ etudiant.moyenne | number: '1.2-2' }}</td>
+  </tr>
+  </tbody>
+</table>
+<br>
+<button *ngIf="tableVisible" (click)="enregistrer()">Enregistrer</button>
