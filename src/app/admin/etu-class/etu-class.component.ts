@@ -7,6 +7,7 @@ import { baseUrl } from "../../../main";
 import { NgClass, NgForOf, NgIf } from "@angular/common";
 
 interface Etudiant {
+  prenom :String;
   nom: string;
   id: number;
 }

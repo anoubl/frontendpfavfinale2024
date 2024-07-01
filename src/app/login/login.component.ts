@@ -26,6 +26,7 @@ export class LoginComponent {
         this.fullName = response.data.username
         sessionStorage.setItem("userName" , this.fullName)
         sessionStorage.setItem("isAuthentifie" ,"true");
+        sessionStorage.setItem("userId" , response.data.id);
         if (this.role === 'ADMIN') {
           this.router.navigate(['/accueil-admin']);
         } else if (this.role == "ENSEIGNANT") {

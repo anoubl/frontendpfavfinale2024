@@ -10,25 +10,23 @@ import { PlanificationComponent } from './admin/planification/planification.comp
 import { MatieresComponent } from './admin/matieres/matieres.component';
 import {AuthGuardService} from "./admin/auth-guard.service";
 import {AccueilEnseignantComponent} from "./ensignant/accueil/accueil.component";
+import {EtudiantNoteComponent} from "./etudiant/etudiantnote/etudiantnote.component";
+import {SaisieNotesComponent} from "./ensignant/saisie-notes/saisie-notes.component";
 import {EtuClassComponent} from "./admin/etu-class/etu-class.component";
-
 export const routes: Routes = [
-  {path: '', redirectTo: '/login', pathMatch: 'full'}, // Redirection par défaut vers /login
-  {path: 'login', component: LoginComponent},
-  {path: 'accueil-admin', component: AccueilAdminComponent, canActivate: [AuthGuardService]},
-  {path: 'accueil-enseignant', component: AccueilEnseignantComponent, canActivate: [AuthGuardService]},
-
-  {path: 'accueil-etudiant', component: AccueilEtudiantComponent, canActivate: [AuthGuardService]},
-  {path: 'add-enseignant', component: AddEnseignantComponent, canActivate: [AuthGuardService]},
-  {path: 'etudiants', component: EtudiantsComponent, canActivate: [AuthGuardService]},
-  {path: 'classes', component: ClassesComponent, canActivate: [AuthGuardService]},
-  {path: 'matieres', component: MatieresComponent, canActivate: [AuthGuardService]},
-  {path: 'planification', component: PlanificationComponent, canActivate: [AuthGuardService]},
-  // Autres routes sécurisées par l'AuthGuard
-  {path: 'Saisie', component: PlanificationComponent, canActivate: [AuthGuardService]},
-  {path: 'etu-classe/:id', component: EtuClassComponent, canActivate: [AuthGuardService]},
-
-
+  { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirection par défaut vers /login
+  { path: 'login', component: LoginComponent },
+  { path: 'accueil-admin', component: AccueilAdminComponent, canActivate: [AuthGuardService] },
+  { path: 'accueil-etudiant', component: AccueilEtudiantComponent, canActivate: [AuthGuardService] },
+  { path: 'add-enseignant', component: AddEnseignantComponent, canActivate: [AuthGuardService] },
+  { path: 'etudiants', component: EtudiantsComponent, canActivate: [AuthGuardService] },
+  { path: 'classes', component: ClassesComponent, canActivate: [AuthGuardService] },
+  { path: 'matieres', component: MatieresComponent, canActivate: [AuthGuardService] },
+  { path: 'planification', component: PlanificationComponent, canActivate: [AuthGuardService] },
+  { path: 'accueil-enseignant', component: AccueilEnseignantComponent, canActivate: [AuthGuardService] },
+  { path: 'notes', component: SaisieNotesComponent, canActivate: [AuthGuardService] },
+  { path: 'note-etudiant', component: EtudiantNoteComponent, canActivate: [AuthGuardService] },
+  {path : 'etu-classe/:id' , component : EtuClassComponent , canActivate : [AuthGuardService]}
 ];
 
 @NgModule({

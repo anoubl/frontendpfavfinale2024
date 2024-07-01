@@ -48,7 +48,7 @@
           <div class="form-group">
             <label for="etudiant">Sélectionnez un étudiant :</label>
             <select class="form-control" id="etudiant" [(ngModel)]="selectedEtudiant">
-              <option *ngFor="let etudiant of allEtudiants" [value]="etudiant.id">{{ etudiant.nom }}</option>
+              <option *ngFor="let etudiant of allEtudiants" [value]="etudiant.id">{{ etudiant.prenom +" "+ etudiant.nom }}</option>
             </select>
           </div>
         </div>
